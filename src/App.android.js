@@ -45,6 +45,7 @@ const navigatorStyle = {
 // });
 
 //Tab bar based Navigation
+
 Navigation.startTabBasedApp({
 	tabs: [
 		{
@@ -64,10 +65,10 @@ Navigation.startTabBasedApp({
 		},
 		{
 			label: 'Two',
-			screen: 'app.Home',
-			icon: require('../src/assets/homeicon.png'),
-			selectedIcon: require('../src/assets/homeicon.png'),
-			navigatorStyle: navigatorStyle, // override the navigator style for the tab screen, see "Styling the navigator" below (optional)
+			screen: 'app.Profile',
+			icon: require('../src/assets/bike.png'),
+			selectedIcon: require('../src/assets/bike.png'),
+			navigatorStyle: navigatorStyle, 
 			title: 'Screen Two'
 		}
 	],

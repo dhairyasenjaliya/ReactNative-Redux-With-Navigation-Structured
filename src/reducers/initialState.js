@@ -1,7 +1,6 @@
 export default {
 	projectData: {
-		details: {
-			"name":"some name"
-		},
-	}
+		counter: 0,
+		check: true,
+	},
 };

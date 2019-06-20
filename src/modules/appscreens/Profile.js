@@ -1,36 +1,43 @@
 import React, { PropTypes, Component } from 'react';
-import {  CheckBox, Text, View, TouchableOpacity } from 'react-native'; 
-import { connect } from 'react-redux';
-import * as homeActions from '../../actions/homeActions'; 
-import INCREMENT from '../../constants/actionTypes';
+import { TextInput, CheckBox, Text, View, TouchableOpacity } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';  
 
-class Home extends Component {
+class Profile extends Component {
+ 
+	constructor(props){
+			super(props)
+			this.state = ({
+				text: '',
+			});
+	}
 
-componentDidMount(){
-	
-}
+	// componentDidMount(){ 
+	// }
 
 	render() {
-		return (
+	 return (
 			<View style={{ flex: 1 }}>
 				<View style={{ padding: 20, alignItems: 'center' }}>
-					<Text style={{ fontSize: 40 }}>HOMEEEEEEE</Text>
+					<Text style={{ fontSize: 40 }}>Setting</Text>
 				</View>
 				{/* <TouchableOpacity
 					style={{ padding: 20, alignItems: 'center', top: 632, backgroundColor: 'yellow' }}
-					onPress={() => this.props.navigation.navigate('Settings')}
+					onPress={() => this.props.navigation.navigate('Home')}
 				>
-					<Text>Setting</Text>
+					<Text>Homee</Text>
 				</TouchableOpacity> */}
+
 				<Text style={{ padding: 20, alignSelf: 'center', fontSize: 30 }}>
 					Pressed {this.props.counter} times!
 				</Text>
+
 				<TouchableOpacity
 					style={{
 						padding: 20,
 						alignSelf: 'center',
 						fontSize: 30,
-						backgroundColor: '#cddc39',
+						backgroundColor: '#8bc34a',
 						width: '50%',
 					}}
 					title="Increment"
@@ -38,54 +45,75 @@ componentDidMount(){
 				>
 					<Text style={{ alignSelf: 'center' }}>Increment</Text>
 				</TouchableOpacity>
+
 				<TouchableOpacity
 					style={{
 						padding: 20,
 						alignSelf: 'center',
 						fontSize: 30,
-						backgroundColor: '#ff7043',
+						backgroundColor: '#ff5722',
 						width: '50%',
 					}}
-					title="Decrement"
 					onPress={() => this.props.doDecrement()}
 				>
 					<Text style={{ alignSelf: 'center' }}> Decrement</Text>
 				</TouchableOpacity>
+
 				<View style={{ flexDirection: 'column', alignItems: 'center', top: 20 }}>
 					<View style={{ flexDirection: 'row' }}>
-						<CheckBox
-							value={this.props.check}
-							// onValueChange={() => this.setState({ checked: !this.props.checked })     }
-							onValueChange={() => this.props.doCheck()}
-						/>
+						<CheckBox value={this.props.check} onValueChange={() => this.props.doCheck()} />
 						{this.props.check ? (
-							<Text> hola</Text>
+							<Text>hola</Text>
 						) : (
 							<Text style={{ marginTop: 5 }}> Click MEH TO change State</Text>
 						)}
 					</View>
 				</View>
+
+				<TextInput
+					style={{ height: 40, borderColor: 'gray', borderWidth: 1, top: 20, borderRadius: 80 }}
+					onChangeText={text => this.setState({ text })}
+					keyboardType={'numeric'}
+					value={this.state.text}
+				/>
+
+				<TouchableOpacity
+					style={{
+						padding: 20,
+						alignSelf: 'center',
+						fontSize: 30,
+						backgroundColor: '#42a5f5',
+						width: '60%',
+						top: 30,
+					}}
+					onPress={() => this.props.doUpdate(this.state.text)}
+				>
+					<Text style={{ alignSelf: 'center' }}> Update Value</Text>
+				</TouchableOpacity>
 			</View>
 		);
 	}
 }
 
-function mapStateToProps(state) { 
+function mapStateToProps(state) {
 	return {
 		counter: state.homeReducer.counter,
 		check: state.homeReducer.check,
 	};
 }
 
-function mapDispatchToProps(dispatch) { 
-
+function mapDispatchToProps(dispatch) {
 	return {
 		// actions: bindActionCreators(homeActions, dispatch),
 		doIncrement: () => dispatch({ type: 'INCREMENT' }),
 		doDecrement: () => dispatch({ type: 'DECREMENT' }),
 		doCheck: () => dispatch({ type: 'CHECK' }),
+		doUpdate: (val) => dispatch({ type: 'UPDATE' , payload: val }),
 		// doCheck: () => dispatch({ type: 'CHECK', payload: 'test' }),
 	};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Profile);
