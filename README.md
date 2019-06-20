@@ -1,6 +1,4 @@
-# RNWixNavigationReduxStarter
-A starter template for all react native apps using wix native navigation and redux  
-<pre>
+# ReactNative-Redux-With-Navigation  
 Directory structure:-  
 Entire JS specfic files are in src folder  
 ├── src  
@@ -28,4 +26,4 @@ Entire JS specfic files are in src folder
 │   ├── screens.js                        <-All screens are defined here     
 │   └── store                             <-Central Redux Store      
 │       └── configureStore.js     
-</pre>
+ 
