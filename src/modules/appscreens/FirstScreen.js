@@ -7,6 +7,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as homeActions from '../../actions/homeActions';
 import styles from './styles/FirstScreenStyles';
+
+
 class FirstScreen extends Component {
 	render = () => {
 		return (

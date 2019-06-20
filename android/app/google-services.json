@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "277272543746",
+    "firebase_url": "https://reduxstructure.firebaseio.com",
+    "project_id": "reduxstructure",
+    "storage_bucket": "reduxstructure.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277272543746:android:e641121acaff4fac",
+        "android_client_info": {
+          "package_name": "com.courseapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277272543746-jslubaart8qqgpie6v0v30pkgm1dg3dd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.courseapp",
+            "certificate_hash": "b1b54c4104bccb96177a010521fbaab419eccc20"
+          }
+        },
+        {
+          "client_id": "277272543746-asbfl5t12imsf8pdfri4jooabffnqtor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg9TXABm7B-GZgTEk4YKN0c0ypPzbgOLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277272543746-asbfl5t12imsf8pdfri4jooabffnqtor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

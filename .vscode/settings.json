@@ -6,5 +6,6 @@
     "**/.gitaaaaaa": true,
     "**/.project": true,
     "**/.settings": true
-  }
+  },
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
