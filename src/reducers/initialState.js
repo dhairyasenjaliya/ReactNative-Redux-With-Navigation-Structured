@@ -3,4 +3,7 @@ export default {
 		counter: 0,
 		check: true,
 	},
+	userinfo : {
+		users :'Guest'
+	}
 };

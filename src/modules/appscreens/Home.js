@@ -5,16 +5,21 @@ import * as homeActions from '../../actions/homeActions';
 import INCREMENT from '../../constants/actionTypes';
 
 class Home extends Component {
+	componentDidMount() {}
 
-componentDidMount(){
-	
-}
+	toggleDrawer() {
+		this.props.navigator.toggleDrawer({
+			to: 'open',
+			side: 'left',
+			animated: true,
+		});
+	}
 
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={{ padding: 20, alignItems: 'center' }}>
-					<Text style={{ fontSize: 40 }}>HOMEEEEEEE</Text>
+					<Text style={{ fontSize: 25 }}>Welcome Home , {this.props.user} ! </Text>
 				</View>
 				{/* <TouchableOpacity
 					style={{ padding: 20, alignItems: 'center', top: 632, backgroundColor: 'yellow' }}
@@ -51,6 +56,21 @@ componentDidMount(){
 				>
 					<Text style={{ alignSelf: 'center' }}> Decrement</Text>
 				</TouchableOpacity>
+
+				<TouchableOpacity
+					style={{
+						padding: 20,
+						alignSelf: 'center',
+						fontSize: 30,
+						backgroundColor: '#cddc39',
+						width: '50%',
+					}}
+					title="Increment"
+					onPress={()=>this.toggleDrawer()}
+				>
+					<Text style={{ alignSelf: 'center' }}>SHOW Drawer</Text>
+				</TouchableOpacity>
+
 				<View style={{ flexDirection: 'column', alignItems: 'center', top: 20 }}>
 					<View style={{ flexDirection: 'row' }}>
 						<CheckBox
@@ -74,6 +94,7 @@ function mapStateToProps(state) {
 	return {
 		counter: state.homeReducer.counter,
 		check: state.homeReducer.check,
+		user : state.userReducer.users
 	};
 }
 

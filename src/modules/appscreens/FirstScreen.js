@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import * as homeActions from '../../actions/homeActions';
 import styles from './styles/FirstScreenStyles';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+// import { Navigation } from 'react-native-navigation';
 
 
 class FirstScreen extends Component {
@@ -31,6 +32,8 @@ class FirstScreen extends Component {
 		});
 	}
 
+	 
+
 	_signIn = async () => {
 		//Prompts a modal to let the user sign in into your application.
 		try {
@@ -40,8 +43,12 @@ class FirstScreen extends Component {
 				showPlayServicesUpdateDialog: true,
 			});
 			const userInfo = await GoogleSignin.signIn();
-			console.warn('User Info --> ', userInfo);
-			this.setState({ user: userInfo.user });
+			// console.warn('User Info --> ', userInfo);
+			this.props.fetchUser(userInfo.user); 
+ 
+
+			// this.setState({ user: userInfo.user });
+			// console.warn(this.props.user)
 		} catch (error) {
 			console.warn('Message', error.message);
 			if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -92,7 +99,7 @@ class FirstScreen extends Component {
 				<Text>Hollaaaa</Text>
 
 				<GoogleSigninButton
-					style={{ width: 192, height: 40, top: -3 }}
+					style={{ width: 192, height: 40, top: 300, alignSelf: 'center' }}
 					size={GoogleSigninButton.Size.Wide}
 					color={GoogleSigninButton.Color.Dark}
 					onPress={this.state.user == null ? this._signIn : this._signOut}
@@ -103,15 +110,15 @@ class FirstScreen extends Component {
 	};
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
 	return {
-        courseData:state
+        user :state.userReducer
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		actions: bindActionCreators(homeActions, dispatch)
+		fetchUser: (user) => dispatch({ type: 'USER' ,payload : user }),
 	};
 }
 

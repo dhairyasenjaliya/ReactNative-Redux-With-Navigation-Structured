@@ -4,3 +4,6 @@ export const INCREMENT = 'INCREMENT';
 export const DECREMENT = 'DECREMENT';
 export const CHECK = 'CHECK';
 export const UPDATE = 'UPDATE';
+
+export const USER = 'USER';
+

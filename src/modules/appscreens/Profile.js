@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { TextInput, CheckBox, Text, View, TouchableOpacity } from 'react-native';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';  
 
 class Profile extends Component {

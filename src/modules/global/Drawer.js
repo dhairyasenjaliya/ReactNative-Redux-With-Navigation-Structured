@@ -54,7 +54,7 @@ export default class Drawer extends Component {
 							<View style={styles.drawerListItem}>
 								{iconTV}
 								<Text style={styles.drawerListItemText}>
-									Screen1
+									Login
 								</Text>
 							</View>
 						</TouchableOpacity>
