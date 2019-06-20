@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.factorypath": true,
+    "**/.git": false,
+    "**/.gitaaaaaa": true,
+    "**/.project": true,
+    "**/.settings": true
+  }
+}
