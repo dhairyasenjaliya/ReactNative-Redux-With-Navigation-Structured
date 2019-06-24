@@ -1,13 +1,14 @@
-import React from 'react'; // eslint-disable-line
+import React from 'react';  
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
 
 import { registerScreens } from './screens';
-import configureStore from './store/configureStore';
+import { store } from './store/configureStore';
+import { persistor } from './store/configureStore';
 
-const store = configureStore();
+// const store = configureStore();
 
-registerScreens(store, Provider);
+registerScreens(store, Provider, persistor);
 
 const navigatorStyle = {
 	statusBarColor: 'black',
