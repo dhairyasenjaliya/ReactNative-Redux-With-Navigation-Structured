@@ -1,115 +1,135 @@
 import React, { PropTypes, Component } from 'react';
-import { TextInput, CheckBox, Text, View, TouchableOpacity } from 'react-native';
+import {StyleSheet, ScrollView , Image,  TextInput, CheckBox, Text, View, TouchableOpacity ,Alert } from 'react-native';
 // import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';  
+import { GoogleSignin , GoogleSigninButton, statusCodes } from 'react-native-google-signin';
+import UserInfo from './UserInfo'
 
 class Profile extends Component {
- 
-	constructor(props){
-			super(props)
-			this.state = ({
-				text: '',
-			});
+	 
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: null,
+			userInfo: '',
+			email: '',
+			password: '',
+			errorMessage: null,
+		};
 	}
 
-	// componentDidMount(){ 
-	// }
+	componentDidMount() {
+		GoogleSignin.configure({
+			//It is mandatory to call this method before attempting to call signIn()
+			scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+			// Repleace with your webClientId generated from Firebase console
+			webClientId: '277272543746-asbfl5t12imsf8pdfri4jooabffnqtor.apps.googleusercontent.com',
+		}); 
+	}
+
+	_signIn = async () => {
+		//Prompts a modal to let the user sign in into your application.
+		try {
+			await GoogleSignin.hasPlayServices({
+				//Check if device has Google Play Services installed.
+				//Always resolves to true on iOS.
+				showPlayServicesUpdateDialog: true,
+			});
+			const userInfo = await GoogleSignin.signIn();
+			// console.warn('User Info --> ', userInfo);
+			this.props.fetchUser(userInfo.user);
+			// console.warn(userInfo.user)
+			// this.setState({ user: userInfo.user });
+			// console.warn(this.props.user)
+		} catch (error) {
+			// console.warn('Message', error.message);
+			if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+				Alert.alert('User Cancelled');
+				// console.warn('User Cancelled the Login Flow');
+			} else if (error.code === statusCodes.IN_PROGRESS) {
+				// console.warn('Signing In');
+			} else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+				// console.warn('Play Services Not Available or Outdated');
+			} else {
+				// console.warn('Some Other Error Happened');
+			}
+		}
+	};
+	_getCurrentUser = async () => {
+		//May be called eg. in the componentDidMount of your main component.
+		//This method returns the current user
+		//if they already signed in and null otherwise.
+		try {
+			const userInfo = await GoogleSignin.signInSilently();
+			this.setState({ userInfo });
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	_revokeAccess = async () => {
+		//Remove your application from the user authorized applications.
+		try {
+			await GoogleSignin.revokeAccess();
+			console.warn('deleted');
+		} catch (error) {
+			console.error(error);
+		}
+	};
 
 	render() {
-	 return (
+		return (
 			<View style={{ flex: 1 }}>
-				<View style={{ padding: 20, alignItems: 'center' }}>
-					<Text style={{ fontSize: 40 }}>Setting</Text>
+				<Image
+					style={{ height: 200 }}
+					source={
+						this.props.user == 'Guest'
+							? require('../../assets/userdefault.jpg')
+							: { uri: this.props.user.photo }
+					}
+				/> 
+				<View>
+					{this.props.user == 'Guest' ? (
+						<GoogleSigninButton
+							style={styles.button}
+							size={GoogleSigninButton.Size.Wide}
+							color={GoogleSigninButton.Color.Dark}
+							onPress={this._signIn}
+							disabled={this.state.isSigninInProgress}
+						/>
+					) : (
+						<UserInfo />
+					)}
 				</View>
-				{/* <TouchableOpacity
-					style={{ padding: 20, alignItems: 'center', top: 632, backgroundColor: 'yellow' }}
-					onPress={() => this.props.navigation.navigate('Home')}
-				>
-					<Text>Homee</Text>
-				</TouchableOpacity> */}
-
-				<Text style={{ padding: 20, alignSelf: 'center', fontSize: 30 }}>
-					Pressed {this.props.counter} times!
-				</Text>
-
-				<TouchableOpacity
-					style={{
-						padding: 20,
-						alignSelf: 'center',
-						fontSize: 30,
-						backgroundColor: '#8bc34a',
-						width: '50%',
-					}}
-					title="Increment"
-					onPress={() => this.props.doIncrement()}
-				>
-					<Text style={{ alignSelf: 'center' }}>Increment</Text>
-				</TouchableOpacity>
-
-				<TouchableOpacity
-					style={{
-						padding: 20,
-						alignSelf: 'center',
-						fontSize: 30,
-						backgroundColor: '#ff5722',
-						width: '50%',
-					}}
-					onPress={() => this.props.doDecrement()}
-				>
-					<Text style={{ alignSelf: 'center' }}> Decrement</Text>
-				</TouchableOpacity>
-
-				<View style={{ flexDirection: 'column', alignItems: 'center', top: 20 }}>
-					<View style={{ flexDirection: 'row' }}>
-						<CheckBox value={this.props.check} onValueChange={() => this.props.doCheck()} />
-						{this.props.check ? (
-							<Text>hola</Text>
-						) : (
-							<Text style={{ marginTop: 5 }}> Click MEH TO change State</Text>
-						)}
-					</View>
-				</View>
-
-				<TextInput
-					style={{ height: 40, borderColor: 'gray', borderWidth: 1, top: 20, borderRadius: 80 }}
-					onChangeText={text => this.setState({ text })}
-					keyboardType={'numeric'}
-					value={this.state.text}
-				/>
-
-				<TouchableOpacity
-					style={{
-						padding: 20,
-						alignSelf: 'center',
-						fontSize: 30,
-						backgroundColor: '#42a5f5',
-						width: '60%',
-						top: 30,
-					}}
-					onPress={() => this.props.doUpdate(this.state.text)}
-				>
-					<Text style={{ alignSelf: 'center' }}> Update Value</Text>
-				</TouchableOpacity>
 			</View>
 		);
 	}
 }
 
+
+const styles = StyleSheet.create({
+		button: {
+			top: '-50%',
+			width: 250,
+			height: 60,
+			alignItems: 'center',
+			backgroundColor: '#EF5350', 
+			alignSelf: 'center',
+		} 
+});
+
+
+
 function mapStateToProps(state) {
 	return {
-		counter: state.homeReducer.counter,
-		check: state.homeReducer.check,
+		user: state.userReducer.users,
 	};
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		// actions: bindActionCreators(homeActions, dispatch),
-		doIncrement: () => dispatch({ type: 'INCREMENT' }),
-		doDecrement: () => dispatch({ type: 'DECREMENT' }),
-		doCheck: () => dispatch({ type: 'CHECK' }),
-		doUpdate: (val) => dispatch({ type: 'UPDATE' , payload: val }),
-		// doCheck: () => dispatch({ type: 'CHECK', payload: 'test' }),
+		fetchUser: user => dispatch({ type: 'USER', payload: user }),
+		logoutUser:() => dispatch({type : 'LOGOUT'})
 	};
 }
 

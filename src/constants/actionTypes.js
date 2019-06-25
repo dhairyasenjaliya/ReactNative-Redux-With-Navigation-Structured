@@ -6,4 +6,6 @@ export const CHECK = 'CHECK';
 export const UPDATE = 'UPDATE';
 
 export const USER = 'USER';
+export const LOGOUT = 'LOGOUT';
+
 
