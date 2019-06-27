@@ -12,6 +12,7 @@ import {
 	AsyncStorage,
 } from 'react-native';
 // import { bindActionCreators } from 'redux';
+import { YellowBox } from 'react-native';
 import { connect } from 'react-redux';
 import { GoogleSignin, GoogleSigninButton, statusCodes } from 'react-native-google-signin';
 import UserInfo from './UserInfo';
@@ -19,6 +20,10 @@ import SocketIOClient from 'socket.io-client';
 import { GiftedChat } from 'react-native-gifted-chat'; 
 
 const USER_ID = '@userId';
+
+YellowBox.ignoreWarnings([
+	'Unrecognized WebSocket connection option(s) `agent`, `perMessageDeflate`, `pfx`, `key`, `passphrase`, `cert`, `ca`, `ciphers`, `rejectUnauthorized`. Did you mean to put these under `headers`?',
+]);
 
 class Chat extends Component {
 	constructor(props) {
@@ -39,10 +44,12 @@ class Chat extends Component {
 		this.onSend = this.onSend.bind(this);
 		this._storeMessages = this._storeMessages.bind(this);
 
-		this.socket = SocketIOClient('http://172.104.41.156:3000');
+		this.socket = SocketIOClient('http://192.168.0.8:3000'); 
+	 
 		this.socket.on('message', this.onReceivedMessage);
-		console.warn(this.socket);
+		console.warn('Hola');
 		this.determineUser();  
+ 
 	}
 
 	componentWillMount() {
@@ -59,6 +66,17 @@ class Chat extends Component {
 					},
 					image: 'https://placeimg.com/230/140/any',
 				},
+				{
+					_id: 2,
+					text: 'Hope Your doing great',
+					createdAt: new Date(),
+					user: {
+						_id: 1,
+						name: 'React Native',
+						avatar: 'https://placeimg.com/140/140/any',
+					},
+					image: 'https://placeimg.com/230/220/any',
+				},
 			],
 		});
 	}
@@ -69,7 +87,7 @@ class Chat extends Component {
 				// If there isn't a stored userId, then fetch one from the server.
 				if (!userId) {
 					this.socket.emit('userJoined', null);
-					this.socket.on('userJoined', userId => {
+					this.socket.on('connection', userId => {
 						AsyncStorage.setItem(USER_ID, userId);
 						this.setState({ userId });
 					});
@@ -85,15 +103,15 @@ class Chat extends Component {
 	/**
 	 * When the server sends a message to this.
 	 */
-	onReceivedMessage(messages) {
-		this._storeMessages(messages);
+	onReceivedMessage(messages) { 
+		this._storeMessages(messages); 
 	}
 
 	/**
 	 * When a message is sent, send the message to the server
 	 * and store it in this component's state.
 	 */
-	onSend(messages = []) {
+	onSend(messages = []) { 
 		this.socket.emit('message', messages[0]);
 		this._storeMessages(messages);
 	}

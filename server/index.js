@@ -23,6 +23,7 @@ app.get('/', function(req, res) {
 }); 
 
 
+
 websocket.on('connection', socket => {
 	clients[socket.id] = socket;
 	socket.on('userJoined', userId => onUserJoined(userId, socket));
@@ -35,22 +36,24 @@ function onUserJoined(userId, socket) {
 	try {
 		// The userId is null for new users.
 		if (!userId) {
-			var user = db.collection('users').insert({}, (err, user) => {
-				socket.emit('userJoined', user._id);
-				users[socket.id] = user._id;
-				_sendExistingMessages(socket);
-			});
-		} else {
+			sendExistingMessages(socket);
+			// var user = db.collection('users').insert({}, (err, user) => {
+			// 	socket.emit('userJoined', user._id);
+			// 	users[socket.id] = user._id;
+			// 	_sendExistingMessages(socket);
+			// });
+			
+		} else { 
 			users[socket.id] = userId;
 			_sendExistingMessages(socket);
 		}
 	} catch (err) {
-		console.err(err);
+		// console.err(err);
 	}
 }
 
 // When a user sends a message in the chatroom.
-function onMessageReceived(message, senderSocket) { 
+function onMessageReceived(message, senderSocket) {   
 	var userId = users[senderSocket.id];
 	// Safety check.
 	if (!userId) return;
@@ -73,7 +76,7 @@ function _sendExistingMessages(socket) {
 }
 
 // Save the message to the db and send all sockets but the sender.
-function _sendAndSaveMessage(message, socket, fromServer) { 
+function _sendAndSaveMessage(message, socket, fromServer) {  
 	var messageData = {
 		text: message.text,
 		user: message.user,
@@ -81,18 +84,21 @@ function _sendAndSaveMessage(message, socket, fromServer) {
 		chatId: chatId,
 	};
 
+	// var emitter = fromServer ? websocket : socket.broadcast;
+	// emitter.emit('message', [message]);
  
-	db.collection('messages').insert(messageData, (err, message) => {
+ 
+	db.collection('messages').insert(messageData, (err, message) => { 
 		// If the message is from the server, then send to everyone.
 		var emitter = fromServer ? websocket : socket.broadcast;
 		emitter.emit('message', [message]);
+		// console.log(message)
 	});
 }
 
 // Allow the server to participate in the chatroom through stdin.
 var stdin = process.openStdin();
-stdin.addListener('data', function(d) {
-	
+stdin.addListener('data', function(d) { 
 	_sendAndSaveMessage(
 		{
 			text: d.toString().trim(),
