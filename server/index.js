@@ -53,7 +53,8 @@ function onUserJoined(userId, socket) {
 }
 
 // When a user sends a message in the chatroom.
-function onMessageReceived(message, senderSocket) {   
+function onMessageReceived(message, senderSocket) {  
+	console.log(message.text) 
 	var userId = users[senderSocket.id];
 	// Safety check.
 	if (!userId) return;
