@@ -46,8 +46,7 @@ class Chat extends Component {
 
 		this.socket = SocketIOClient('http://192.168.0.8:3000'); 
 	 
-		this.socket.on('message', this.onReceivedMessage);
-		console.warn('Hola');
+		this.socket.on('message', this.onReceivedMessage); 
 		this.determineUser();  
  
 	}
